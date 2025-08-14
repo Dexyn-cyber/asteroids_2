@@ -12,16 +12,26 @@ def main():
 
 
     while True:
-        for event in pygame.event.get(): # This will check if the user has closed the window and exit the game loop if they do. It will make the window's close button work.
+    # 1. Handle input
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        
-        screen.fill("black") # This will fill the displays background
-        player.draw(screen) # Draws the player on screen
-        player.update(dt)
-        pygame.display.flip() # This will Update the contents of the entire display
 
-        dt = clock.tick(60) / 1000 # update the clock [tick(framerate=0) -> milliseconds] will pause game loop every 1/60th of a second
+        # 2. Update game state
+        player.update(dt)
+
+        # 3. Clear the screen
+        #  (paint it black)
+        screen.fill("dark red")
+        
+        # 4. Draw everything at their NEW positions
+        player.draw(screen)
+        
+        # 5. Show the new frame to the user
+        pygame.display.flip()
+
+        # 6. Wait to maintain 60 FPS
+        dt = clock.tick(60) / 1000
 
 
 
