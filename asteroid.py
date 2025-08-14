@@ -15,8 +15,8 @@ class Asteroid(CircleShape):
         self.position += self.velocity * dt
 
     def split(self):
-        if self.radius < ASTEROID_MIN_RADIUS:
-            self.kill()  # Should remove from ALL groups
+        if self.radius <= ASTEROID_MIN_RADIUS: # BUG: creates phatoms if the = is not present as it ignore the 
+            self.kill()
             return
         
         # Store values before any killing

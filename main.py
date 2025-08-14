@@ -28,25 +28,25 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # This spawns play in the center of the screen
 
     while True:
-    # 1. Handle input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print("Goodbye.")
                 return
-        for aster in asteroids:
-            if player.collides_with(aster):
+            
+        updatable.update(dt)
+        
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
                 print("Game over!")
                 print(player_stats.get_final_score())
                 exit()
 
-        for aster in asteroids:
             for shot in shots:
-                if shot.collides_with(aster):
-                    aster.split()
+                if asteroid.collides_with(shot):
                     shot.kill()
-                    player_stats.got_kill(aster)
-
-        updatable.update(dt)
+                    asteroid.split()
+                    player_stats.got_kill(asteroid)
+                    break # Exit the shots loop after first collision
 
         screen.fill("black") # Draw screen first before objects, the objects get painted over.
 
@@ -54,6 +54,8 @@ def main():
             object.draw(screen)
 
         pygame.display.flip()
+
+        # Limit framerate to 60 FPS
         dt = clock.tick(60) / 1000
 
 

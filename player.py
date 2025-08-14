@@ -1,8 +1,12 @@
+import pygame
+import random
+
 from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN
 from circleshape import CircleShape
 from shot import Shot
-import pygame
 from stats import player_stats
+
+
 
 
 class Player(CircleShape):
@@ -51,5 +55,6 @@ class Player(CircleShape):
             return
         self.shoot_timer = PLAYER_SHOOT_COOLDOWN
         shot = Shot(self.position.x , self.position.y)
-        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        angle = random.uniform(-10, 10)
+        shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
         player_stats.shot_bullet()
