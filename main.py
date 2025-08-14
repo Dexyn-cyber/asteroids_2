@@ -36,6 +36,11 @@ def main():
                 print("Game over!")
                 exit()
 
+        for aster in asteroids:
+            for shot in shots:
+                if shot.collides_with(aster):
+                    aster.split()
+                    shot.kill()
 
         updatable.update(dt)
 
@@ -46,7 +51,6 @@ def main():
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000
-
 
 
 if __name__ == "__main__":
