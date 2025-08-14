@@ -28,6 +28,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        for aster in asteroids:
+            if player.collides_with(aster):
+                print("Game over!")
+                exit()
 
         updatable.update(dt)
 
