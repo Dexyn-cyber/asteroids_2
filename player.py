@@ -2,6 +2,7 @@ from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHO
 from circleshape import CircleShape
 from shot import Shot
 import pygame
+from stats import player_stats
 
 
 class Player(CircleShape):
@@ -51,3 +52,4 @@ class Player(CircleShape):
         self.shoot_timer = PLAYER_SHOOT_COOLDOWN
         shot = Shot(self.position.x , self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        player_stats.shot_bullet()

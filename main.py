@@ -4,6 +4,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from stats import *
 
 
 def main():
@@ -30,10 +31,12 @@ def main():
     # 1. Handle input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                print("Goodbye.")
                 return
         for aster in asteroids:
             if player.collides_with(aster):
                 print("Game over!")
+                print(player_stats.get_final_score())
                 exit()
 
         for aster in asteroids:
@@ -41,6 +44,7 @@ def main():
                 if shot.collides_with(aster):
                     aster.split()
                     shot.kill()
+                    player_stats.got_kill(aster)
 
         updatable.update(dt)
 
