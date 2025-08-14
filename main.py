@@ -18,6 +18,7 @@ def main():
         
         screen.fill("black") # This will fill the displays background
         player.draw(screen) # Draws the player on screen
+        player.update(dt)
         pygame.display.flip() # This will Update the contents of the entire display
 
         dt = clock.tick(60) / 1000 # update the clock [tick(framerate=0) -> milliseconds] will pause game loop every 1/60th of a second
