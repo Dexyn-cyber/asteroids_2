@@ -1,6 +1,8 @@
 import pygame
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 
 def main():
@@ -8,8 +10,18 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock() # create an object to help track time
     dt = 0
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # This spawns play in the center of the screen
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    
+    
+    Player.containers = (updatable, drawable)
+    asteroids = pygame.sprite.Group()
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # This spawns play in the center of the screen
 
     while True:
     # 1. Handle input
@@ -17,20 +29,14 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        # 2. Update game state
-        player.update(dt)
+        updatable.update(dt)
 
-        # 3. Clear the screen
-        #  (paint it black)
-        screen.fill("dark red")
-        
-        # 4. Draw everything at their NEW positions
-        player.draw(screen)
-        
-        # 5. Show the new frame to the user
+        screen.fill("black") # Draw screen first before objects, the objects get painted over.
+
+        for object in drawable:
+            object.draw(screen)
+
         pygame.display.flip()
-
-        # 6. Wait to maintain 60 FPS
         dt = clock.tick(60) / 1000
 
 

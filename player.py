@@ -17,7 +17,7 @@ class Player(CircleShape):
         c = self.position - forward * self.radius + right  # Back-right corner
         return [a, b, c]
 
-    def draw(self,screen):
+    def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
 
     def rotate(self, dt):
@@ -25,7 +25,6 @@ class Player(CircleShape):
         
     def update(self, dt):
         keys = pygame.key.get_pressed()
-        print(f"debug Delta time: {dt}")
         if keys[pygame.K_a]:
             self.rotate(-dt)
         if keys[pygame.K_d]:
@@ -38,4 +37,4 @@ class Player(CircleShape):
     def move(self, dt):
         # Each frame, if W is pressed:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)  # Direction player faces
-        self.position += forward * PLAYER_SPEED * dt      # Move a tiny bit forward
+        self.position += forward * PLAYER_SPEED * dt   # Move a tiny bit forward
