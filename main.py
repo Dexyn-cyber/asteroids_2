@@ -5,6 +5,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from stats import *
+from super_shot import SuperShot
 
 
 def main():
@@ -19,6 +20,8 @@ def main():
     Player.containers = (updatable, drawable)
     shots = pygame.sprite.Group()
     Shot.containers = (shots, updatable, drawable)
+    super_shot = pygame.sprite.Group()
+    SuperShot.containers = (super_shot, updatable, drawable)
 
     asteroids = pygame.sprite.Group()
     Asteroid.containers = (asteroids, updatable, drawable)

@@ -1,0 +1,163 @@
+1. When Creating a new class that a object in game it needs to be a inheritor of 'CircleShape. This Is what gives the object it's hit box 
+
+2. Next is to create a constant RADIUS for said object.
+
+3. From the parent class you will override the draw() and update() functions as these 'draw' the object on sceen and 'update' the position along side the state.
+IMPORTANT: Must draw the screen then the player or you'll end up painting over the player/object on sceen to call screen.fill() first then the object/drawables.
+
+4. IF creating a player or start object you'll add there position in via half the screen with the paste that in as the pos_x pos_y or make it were the start is the parents position.
+ You'll also need to create the dimensions for the object to draw it but I'm not versed in that so the code was already implemented with it.
+
+5. Unit Vectors and rotation, Unit vertor is the single most important part as this it is the direction something is moving in or pointing. Moving the object is controlled by the Delta time or Frame rate
+so you pass that though move  it'll use it to multiply the pixel count that's ocurring so it's not instant it's semless movement, Calc: self.position += Direction * 200 * 0.013<=Delta_time.
+def move(self, dt):
+
+Unit Vectors: A unit vector is a vector with a length of 1. In this context, Vector2(0, 1) points straight up. It's useful because it represents only direction, not speed or distance.
+Rotation: Rotating the unit vector lets us find which direction the player is facing.
+Delta Time (dt): This represents the time passed since the last frame, so movement is framerate-independent (smooth and consistent regardless of computer speed).
+Speed: The PLAYER_SPEED constant determines how fast the player moves.
+So, the movement calculation:
+self.position += direction * PLAYER_SPEED * dt
+
+
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
+This is a basic move function that passes in Delta time so that it stays relative to the frame rate (Delta Time = 1/60'th>second / 1000) = roughly 0.013.
+For Forward pygame.vector2(0,1) 0=Horizontal 1=vertical pointing straight up then .rotate(self.rotation) is simple self read this is using a function called .rotate() to rotate the The direction.
+The rotation is counted via positive and negative always come's back to 360 range example if self.rotation=24000 it would calculate by self.rotation % 360 = current Rotation, divide 24k by 360 what ever remains is the current degree.
+
+6. When your creating a object the constuctor from circle is what set's it automatically you call it via super()
+Heres a class example of whats called on a small object:
+
+import pygame
+from circleshape import CircleShape
+from constants import SHOT_RADIUS
+
+class Shot(CircleShape):
+    def __init__(self, x, y):
+        super().__init__(x, y, SHOT_RADIUS)
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, "white", self.position, self.radius, 2)
+
+    def update(self, dt):
+        self.position += self.velocity * dt
+
+The class inherits from CircleShape Taking it's constructor and having the object with it's parameters.
+The CicleShape class inherits pygame.sprite.Sprite pygame library, which is essential for all Pygame functionalities, including graphics, sound, and event handling.
+This defines our CircleShape class. The (pygame.sprite.Sprite) part means that CircleShape inherits from pygame.sprite.Sprite. This inheritance provides CircleShape with built-in features that make it compatibl
+with Pygame's sprite and group systems.
+
+def __init__(self, x, y, radius):
+This is the constructor method for the CircleShape class. When you create a new CircleShape object, this method is called. It takes three parameters:
+    x: The initial X-coordinate of the circle's center.
+    y: The initial Y-coordinate of the circle's center.
+    radius: The radius of the circle.
+
+        if hasattr(self, "containers"):
+            super().__init__(self.containers)
+        else:
+            super().__init__()
+
+hasattr(self, "containers"): This checks if the CircleShape instance (or its class, because containers is a class variable) has an attribute called containers. As you learned in the lesson, 
+containers is where you specify which pygame.sprite.Groups this sprite should belong to.
+super().__init__(self.containers): If containers does exist (meaning you've set up the groups for this class),
+it calls the __init__ method of the parent class (pygame.sprite.Sprite) and passes the containers to it. This automatically adds the new sprite to the specified groups.
+else: super().__init__(): If containers hasn't been set, it simply calls the parent constructor without adding it to any groups yet.
+
+self.velocity = pygame.Vector2(0, 0)
+This initializes the velocity of the circle. For now, it's set to (0, 0), meaning the circle starts off not moving. Later, you might change this to make the circle move around.
+
+    def draw(self, screen):
+        # must override
+        pass
+
+This is a placeholder method. The pass keyword means it does nothing. This method is intended to be overridden by any class that inherits from CircleShape.
+When you have an actual circle to draw (like a player character), you would put the Pygame drawing code inside this draw method in your child class, taking the screen surface as an argument to draw upon.
+
+    def update(self, dt):
+        # must override
+        pass
+
+Similar to draw, this is another placeholder method meant to be overridden. The update method is where you'd put logic that changes the state of your game object over time, such as moving its position based on its velocity, handling animations, or checking for collisions. The dt (delta time) parameter is often used to make movements frame-rate independent.
+
+In essence, CircleShape provides the basic structure for any circular game object, handling its position, velocity, and its integration with Pygame's sprite system,
+while leaving the specifics of drawing and updating to be implemented by more specialized classes that inherit from it.
+
+Here's boot Explaining a step by step:
+
+Let's imagine you want to create a new Asteroid class. You'd typically put this in its own file, perhaps asteroid.py, just like player.py and circleshape.py.
+Step 1: Create the new class in a separate file (e.g., asteroid.py)
+
+Your asteroid.py file might look something like this. Notice how it inherits from CircleShape if you want it to have basic circular properties, or pygame.sprite.Sprite if it's not necessarily circular and you want to start from scratch. For an asteroid, CircleShape is a good base!
+
+# asteroid.py
+import pygame
+from circleshape import CircleShape # We need CircleShape as our base
+
+class Asteroid(CircleShape):
+    def __init__(self, x, y, radius, speed):
+        # Call the constructor of the parent class (CircleShape)
+        super().__init__(x, y, radius)
+        
+        # Asteroids might have their own unique properties, like speed
+        self.speed = speed
+        
+        # For simplicity, let's give it a visual representation here.
+        # In a real game, you might load an image.
+        self.color = (150, 75, 0) # Brown color for the asteroid
+
+    # Override the draw method from CircleShape
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
+
+    # Override the update method from CircleShape
+    def update(self, dt):
+        # For a simple asteroid, let's make it move downwards
+        self.position.y += self.speed * dt
+        
+        # You'd add more complex logic here, like wrapping around the screen
+        # or checking for collisions.
+
+Step 2: Import the new class into main.py
+
+Now, in your main.py file, where you manage your game logic and create objects, you'll need to import your new Asteroid class. You'd typically place this import at the top of your main.py file, along with your other imports.
+
+# main.py
+import pygame
+from player import Player
+# ... other imports ...
+from asteroid import Asteroid # Add this line to import your new class
+
+Step 3: Instantiate the new object and add it to groups
+
+Finally, to create an asteroid object and make it part of your game loop, you'd instantiate it (create an instance of it) and ensure it's added to your updatable and drawable groups. Remember from the lesson that setting Player.containers automatically adds new Player instances to those groups. You can do the same for Asteroid.
+
+Before your game loop starts, you might add:
+
+# main.py (before the game loop starts)
+
+# ... (your existing group setup) ...
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+
+Player.containers = (updatable, drawable)
+
+# Set the containers for the Asteroid class as well!
+Asteroid.containers = (updatable, drawable) # Asteroids will also be updatable and drawable
+
+# Create an instance of your new asteroid
+first_asteroid = Asteroid(x=400, y=50, radius=30, speed=0.1)
+
+# If you wanted a dedicated group for asteroids, you could do this:
+# asteroids_group = pygame.sprite.Group()
+# Asteroid.containers = (updatable, drawable, asteroids_group)
+# first_asteroid = Asteroid(x=400, y=50, radius=30, speed=0.1)
+
+Now, because you've added Asteroid instances to the updatable and drawable groups, your game loop (which already calls updatable.update(dt) and loops through drawable for draw calls) will automatically handle your Asteroid objects without needing specific asteroid.update() or asteroid.draw() calls!
+
+This modular approach keeps your code organized and makes it easy to add more object types as your game grows.
+
+
+
+

@@ -6,7 +6,8 @@ from circleshape import CircleShape
 from shot import Shot
 from stats import player_stats
 
-
+from super_shot import SuperShot
+import pygame
 
 
 class Player(CircleShape):
@@ -54,7 +55,12 @@ class Player(CircleShape):
         if self.shoot_timer > 0:
             return
         self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+
         shot = Shot(self.position.x , self.position.y)
         angle = random.uniform(-10, 10)
         shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
         player_stats.shot_bullet()
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+        super_shot = SuperShot(self.position.x, self.position.y)
+        super_shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED * 0.75
