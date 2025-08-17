@@ -12,8 +12,5 @@ class SuperShot(CircleShape):
         pygame.draw.rect(screen, "yellow", (xy,xy,xy,xy))
 
     def update(self, dt):
-<<<<<<< HEAD
-        self.velocity += 200 * dt FIX THIS
-=======
         self.position += self.velocity * dt
->>>>>>> origin/super_shot
+        self.velocity += 200 * dt FIX THIS
