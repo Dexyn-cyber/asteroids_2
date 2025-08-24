@@ -18,14 +18,16 @@ def main():
     drawable = pygame.sprite.Group()
     
     Player.containers = (updatable, drawable)
+
     shots = pygame.sprite.Group()
     Shot.containers = (shots, updatable, drawable)
-    super_shot = pygame.sprite.Group()
-    SuperShot.containers = (super_shot, updatable, drawable)
+    
+    super_shots = pygame.sprite.Group()
+    SuperShot.containers = (super_shots, updatable, drawable)
 
     asteroids = pygame.sprite.Group()
     Asteroid.containers = (asteroids, updatable, drawable)
-    AsteroidField.containers = updatable
+    AsteroidField.containers = (updatable,)
     asteroid_field = AsteroidField()
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # This spawns play in the center of the screen
@@ -50,6 +52,13 @@ def main():
                     asteroid.split()
                     player_stats.got_kill(asteroid)
                     break # Exit the shots loop after first collision
+            for super_shot in super_shots:
+                if asteroid.collides_with(super_shot):
+                    super_shot.kill()
+                    asteroid.split()
+                    asteroid.kill()
+                    player_stats.got_kill(asteroid)
+                    break
 
         screen.fill("black") # Draw screen first before objects, the objects get painted over.
 

@@ -8,9 +8,7 @@ class SuperShot(CircleShape):
         super().__init__(x, y, SUPER_SHOT_RADIUS)
 
     def draw(self, screen):
-        xy = SUPER_SHOT_RADIUS
-        pygame.draw.rect(screen, "yellow", (xy,xy,xy,xy))
+        pygame.draw.circle(screen, "yellow", self.position, self.radius, 2)
 
     def update(self, dt):
         self.position += self.velocity * dt
-        self.velocity += 200 * dt FIX THIS

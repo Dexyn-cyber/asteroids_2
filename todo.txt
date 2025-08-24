@@ -1,0 +1,2 @@
+1. Make a End Game screen. Could Overwrite the screen draw on death to display. Or make a new screen
+

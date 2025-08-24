@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN
+from constants import *
 from circleshape import CircleShape
 from shot import Shot
 from stats import player_stats
@@ -15,6 +15,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shoot_timer = 0
+        self.super_shot_timer = 0
 
     # in the player class
     def triangle(self):
@@ -33,6 +34,7 @@ class Player(CircleShape):
         
     def update(self, dt):
         self.shoot_timer -= dt
+        self.super_shot_timer -= dt
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rotate(-dt)
@@ -44,6 +46,8 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        if keys[pygame.K_x]:
+            self.shoot_super()
 
 
     def move(self, dt):
@@ -56,11 +60,18 @@ class Player(CircleShape):
             return
         self.shoot_timer = PLAYER_SHOOT_COOLDOWN
 
-        shot = Shot(self.position.x , self.position.y)
         angle = random.uniform(-10, 10)
+        shot = Shot(self.position.x , self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
         player_stats.shot_bullet()
-        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
 
-        super_shot = SuperShot(self.position.x, self.position.y)
-        super_shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED * 0.75
+        
+
+    def shoot_super(self):
+        if self.super_shot_timer > 0:
+            return
+        for i in range(0, 11):
+            angle = random.uniform(-25, 25)
+            super_shot = SuperShot(self.position.x , self.position.y)
+            super_shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation + angle) * PLAYER_SHOOT_SPEED * 0.75 * 1.1
+        self.super_shot_timer = PLAYER_SUPER_SHOT_COOLDOWN
