@@ -3,7 +3,7 @@ from constants import *
 import math
 
 class Stats:
-    def __init__(self, score=0, health=1, total_kills=0, sm_kills=0, med_kills=0, big_kills=0, total_shot=0):
+    def __init__(self, score=0, health=PLAYER_HEALTH, total_kills=0, sm_kills=0, med_kills=0, big_kills=0, total_shot=0):
         self.score = score
         self.health = health
         self.kills = total_kills
@@ -33,7 +33,6 @@ class Stats:
         self.total_shot += 1
 
     def get_final_score(self):
-        
         if self.kills != 0 or self.total_shot != 0:
             acc_rating = math.floor((self.kills / self.total_shot) * 100)
         else:
