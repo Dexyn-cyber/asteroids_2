@@ -3,11 +3,12 @@ from constants import *
 import math
 
 class Stats:
-    def __init__(self, score=0, health=PLAYER_HEALTH, total_kills=0, sm_kills=0, med_kills=0, big_kills=0, total_shot=0):
+    def __init__(self, score=0, health=PLAYER_HEALTH, total_kills=0, sm_kills=0, med_kills=0, big_kills=0, total_shot=0, super_shots=0):
         self.score = score
         self.health = health
         self.kills = total_kills
         self.total_shot = total_shot
+        self.super_shots = super_shots
         self.sm_kills = sm_kills
         self.med_kills = med_kills
         self.big_kills = big_kills
@@ -31,6 +32,9 @@ class Stats:
 
     def shot_bullet(self):
         self.total_shot += 1
+
+    def super_shot(self, amount):
+        self.super_shots += amount
 
     def get_final_score(self):
         if self.kills != 0 or self.total_shot != 0:

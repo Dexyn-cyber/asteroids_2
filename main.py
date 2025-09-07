@@ -11,6 +11,7 @@ from hud import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--debug', action='store_true', help='Enable Debug mode')
+parser.add_argument('--death_screen', action='store_true', help='Enabled Debug mode')
 args = parser.parse_args()
 
 
@@ -22,6 +23,7 @@ def main():
     screen_background = pygame.image.load(SPACE_BACKGROUND).convert() # convert optimizes the image for faster blitting
     pygame.display.set_caption("Little Asteroids")
     clock = pygame.time.Clock() # create an object to help track time
+    total_time = pygame.time.get_ticks() // 1000
     dt = 0
 
     updatable = pygame.sprite.Group()
@@ -46,13 +48,14 @@ def main():
 
     while is_alive:
 
+        if args.death_screen:
+            death_screen(screen, player_stats, total_time)
+
         if args.debug:
             if player_stats.health <= 0: # DEBUG: purposes
-                        total_time = pygame.time.get_ticks() // 1000
                         print("Game over!")
                         print(player_stats.get_final_score())
                         death_screen(screen, player_stats, total_time)
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
