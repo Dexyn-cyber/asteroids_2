@@ -8,6 +8,7 @@ from shot import Shot
 from stats import *
 from super_shot import SuperShot
 from hud import *
+from upgrades import upgrades_obj
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--debug', action='store_true', help='Enable Debug mode')
@@ -100,6 +101,8 @@ def main():
 
         # Limit framerate to 60 FPS
         dt = clock.tick(60) / 1000
+        upgrades_obj.CheckMilestone()
+        
 
 
 def death_screen(screen, stats, time):

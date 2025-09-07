@@ -13,9 +13,6 @@ class Stats:
         self.med_kills = med_kills
         self.big_kills = big_kills
 
-    
-    
-
     def got_kill(self, aster):
         if aster.radius == ASTEROID_MAX_RADIUS: 
             self.score += 3

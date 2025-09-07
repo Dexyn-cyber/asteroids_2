@@ -7,8 +7,7 @@ from shot import Shot
 from stats import player_stats
 
 from super_shot import SuperShot
-import pygame
-
+from upgrades import upgrades_obj
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -53,16 +52,30 @@ class Player(CircleShape):
     def move(self, dt):
         # Each frame, if W is pressed:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)  # Direction player faces
-        self.position += forward * PLAYER_SPEED * dt   # Move a tiny bit forward
+        if upgrades_obj.speed == False:
+            self.position += forward * PLAYER_SPEED * dt   # Move a tiny bit forward
+        else:
+            self.position += forward * UPGRADED_PLAYER_SPEED * dt 
+
 
     def shoot(self):
         if self.shoot_timer > 0:
             return
-        self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+        if upgrades_obj.fire_rate == False:
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+        else:
+            self.shoot_timer = UPGRADED_PLAYER_SHOOT_COOLDOWN
 
         angle = random.uniform(-10, 10)
-        shot = Shot(self.position.x , self.position.y)
-        shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
+        
+        if upgrades_obj.double_shot == True:
+            for i in range(0, 2):
+                shot = Shot(self.position.x , self.position.y)
+                angle = random.uniform(-10, 10)
+                shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
+        else:
+            shot = Shot(self.position.x , self.position.y)
+            shot.velocity = pygame.Vector2(0, 1).rotate((self.rotation + angle)) * PLAYER_SHOOT_SPEED
         player_stats.shot_bullet()
 
         
