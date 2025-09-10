@@ -6,15 +6,6 @@ class HUD:
         self.rect = pygame.Rect(x, y, width, height)
         self.font = pygame.font.SysFont(None, 24)
 
-    def update_stats(self, kills=None, score=None, health=None):
-        if kills is not None:
-            self.kills = kills
-        if score is not None:
-            self.score = score
-        if health is not None:
-            self.health = health
-
-
     def draw(self, screen):
         #Draw background box
         pygame.draw.rect(screen, (30, 30, 30), self.rect) # dark grey background [background fill]

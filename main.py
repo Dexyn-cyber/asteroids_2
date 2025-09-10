@@ -11,6 +11,7 @@ from shot import Shot
 from stats import *
 from super_shot import SuperShot
 from hud import *
+from rogue_system import Rogue_System
 from upgrades import upgrades_obj
 
 parser = argparse.ArgumentParser()
@@ -34,6 +35,7 @@ def main():
     drawable = pygame.sprite.Group()
     
     stat_hud = HUD(10, 10)
+    rogue_hud = Rogue_System(180, 10)
 
     Player.containers = (updatable, drawable)
 
@@ -98,8 +100,8 @@ def main():
         
         for object in drawable:
             object.draw(screen)
-        stat_hud.update_stats(player_stats.kills, player_stats.score, player_stats.health)
         stat_hud.draw(screen)
+        rogue_hud.draw(screen)
 
         pygame.display.flip()
 

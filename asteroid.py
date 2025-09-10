@@ -9,7 +9,12 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
         
     def draw(self, screen):
-        pygame.draw.circle(screen, "white", self.position, self.radius, 10)
+        color_a = ''
+        if self.radius >= (ASTEROID_MAX_RADIUS * 0.8): color_a = 'yellow'
+        elif self.radius < (ASTEROID_MAX_RADIUS * 0.6) and self.radius > (ASTEROID_MAX_RADIUS * 0.4): color_a = "darkred"
+        elif self.radius == ASTEROID_MIN_RADIUS: color_a = 'white'
+        else: color_a = "blue"
+        pygame.draw.circle(screen, color_a, self.position, self.radius, 10)
 
     def update(self, dt):
         self.position += self.velocity * dt
