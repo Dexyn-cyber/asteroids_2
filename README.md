@@ -4,7 +4,7 @@ Is used [uv_astral](https://github.com/astral-sh/uv) for a package manager.
 # Requirements 
 requires:
 python-version=3.10+
-(uses)pygame-version=2.6.1
+(uses)pygame-version=2.6.1+
 
 
 # Launching game

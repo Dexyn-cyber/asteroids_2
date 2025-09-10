@@ -1,5 +1,8 @@
 import pygame
 import argparse
+import time
+
+
 from constants import *
 from player import Player
 from asteroid import Asteroid
@@ -92,6 +95,7 @@ def main():
         scaled_image = pygame.transform.scale(screen_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(scaled_image, (0,0)) # Draw screen first before objects, the objects get painted over.
 
+        
         for object in drawable:
             object.draw(screen)
         stat_hud.update_stats(player_stats.kills, player_stats.score, player_stats.health)
@@ -102,10 +106,9 @@ def main():
         # Limit framerate to 60 FPS
         dt = clock.tick(60) / 1000
         upgrades_obj.CheckMilestone()
-        
-
 
 def death_screen(screen, stats, time):
+
     font = pygame.font.SysFont('Arail', 48)
     small_font = pygame.font.SysFont(None, 32)
 
@@ -135,14 +138,21 @@ def death_screen(screen, stats, time):
     pygame.display.flip()
 
     waiting = True
+    pause_application(2)
     while waiting:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
-            if event.type == pygame.KEYDOWN:
+            key = pygame.key.get_pressed()
+            if key[pygame.K_SPACE]:
                 waiting = False
     exit(0)
+
+def pause_application(seconds):
+    # This seems redundant but I dont feel like alter my death_screen function to make it work.
+    import time
+    time.sleep(seconds)
 
 if __name__ == "__main__":
     main()

@@ -1,2 +1,6 @@
-1. Make a End Game screen. Could Overwrite the screen draw on death to display. Or make a new screen
+[Got one] 1. Make a End Game screen. Could Overwrite the screen draw on death to display. Or make a new screen
+2. make the game scale in diffcult(spawn rate)
+3. give asteroids health
 
+Branch: rogue_like | Make the player choose between 1-3 option for a upgrade.
+zIdea: Pick Up style were the player has to pick up an orb for points.
